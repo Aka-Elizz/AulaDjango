@@ -1,8 +1,8 @@
-from django.urls import path, include
-from produtos.views import *
+from django.urls import path
+from produtos.views import index, produtos, produto
 
 urlpatterns = [
-    path('', index),
-    path('produtos/', produtos)
-
+    path('', index, name="index"),
+    path('produtos', produtos, name='produtos'),
+    path('produto/<int:product_id>', produto, name='produto'),
 ]

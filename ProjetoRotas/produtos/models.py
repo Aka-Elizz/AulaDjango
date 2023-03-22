@@ -1,4 +1,6 @@
 from django.db import models
+from datetime import datetime
+
 
 # Create your models here.
 #criando a categoria prlos models
@@ -62,15 +64,32 @@ class Brand(models.Model):
 
 
 class Product(models.Model):
+
+    OPCOES_MODA = [
+        ("UNISSEX", "Unissex"),
+        ("FEMININA", "Feminina"),
+        ("MASCULINA", "Masculina")
+    ]
+
     name = models.CharField(max_length=200, verbose_name="Nome do Produto")
     description = models.TextField(verbose_name="Descrição do produto")
     price = models.FloatField(verbose_name="Preço")
+    fashion = models.CharField(max_length=50, choices=OPCOES_MODA,
+    default= "", blank=False, null=False, verbose_name="Moda")
     status = models.BooleanField(verbose_name="Disponível", default=True)
     stock = models.PositiveIntegerField(verbose_name="Estoque disponível")
     category = models.ForeignKey(Category, verbose_name="Categoria", on_delete=models.CASCADE)
     brand = models.ForeignKey(Brand, verbose_name="Marca/Fabricante", on_delete=models.CASCADE)
     color = models.ForeignKey(Color, verbose_name="Cor", on_delete=models.CASCADE)
     size = models.ForeignKey(Size, verbose_name="Tamanho", on_delete=models.CASCADE)
+
+    image = models.ImageField(upload_to="fotos/%Y/%m/%d/", blank=True)
+    
+    registration_date = models.DateTimeField(default=datetime.now,
+    blank=False, editable=False, verbose_name="Data Cadastro")
+
+    def __str__(self):
+        return self.name
 
     
     class Meta:
